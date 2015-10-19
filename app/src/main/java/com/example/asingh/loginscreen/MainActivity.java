@@ -1,5 +1,6 @@
 package com.example.asingh.loginscreen;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -41,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                loginUserOnFirebase(userNameTextField.getText().toString(), passwordTextField.getText().toString(), myFirebase);
+                startActivity(new Intent(getApplicationContext(), StartPageActivity.class));
             }
         });
     }
@@ -100,7 +102,13 @@ public class MainActivity extends AppCompatActivity {
             public void onAuthenticationError(FirebaseError firebaseError) {
                 switch (firebaseError.getCode()) {
                     case FirebaseError.INVALID_EMAIL:
-                        Toast.makeText(MainActivity.this, "Email Already in System", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Email Email or Password", Toast.LENGTH_SHORT).show();
+                        break;
+                    case FirebaseError.USER_DOES_NOT_EXIST:
+                        Toast.makeText(MainActivity.this, "User not in System", Toast.LENGTH_SHORT).show();
+                        break;
+                    case FirebaseError.INVALID_PASSWORD:
+                        Toast.makeText(MainActivity.this, "Invalid Email or Password", Toast.LENGTH_SHORT).show();
                         break;
                     default:
                         Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
