@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:text="Welcome!"
         android:textSize="20dp"
-        android:id="@+id/textViewWelcome1"
+        android:id="@+id/textViewWelcome"
         android:layout_marginTop="50dp"
         android:layout_gravity="center_horizontal" />
 
@@ -18,6 +18,15 @@
         android:text="You have successfully logged in."
         android:textSize="20dp"
         android:id="@+id/textViewLoggedIn"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="20dp"
+        android:id="@+id/textViewUserName"
         android:layout_marginTop="50dp"
         android:layout_gravity="center_horizontal" />
 </LinearLayout>

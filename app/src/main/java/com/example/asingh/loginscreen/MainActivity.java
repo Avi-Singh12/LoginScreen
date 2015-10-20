@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Firebase.setAndroidContext(this);
 
-        final Firebase myFirebase = new Firebase("https://amber-fire-3201.firebaseio.com/");
+        final Firebase myFirebase = new Firebase("https://loginscreenavi.firebaseio.com/");
         final EditText userNameTextField = (EditText) findViewById(R.id.userNameTextView);
         final EditText passwordTextField = (EditText) findViewById(R.id.passwordTextView);
         final Button createAccountButton = (Button) findViewById(R.id.createAccountButton);
@@ -35,15 +35,83 @@ public class MainActivity extends AppCompatActivity {
         createAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createUserOnFirebase(userNameTextField.getText().toString(), passwordTextField.getText().toString(), myFirebase);
+//                createUserOnFirebase(userNameTextField.getText().toString(), passwordTextField.getText().toString(), myFirebase);
+            myFirebase.createUser(userNameTextField.getText().toString(), passwordTextField.getText().toString(), new Firebase.ValueResultHandler<Map<String, Object>>() {
+                @Override
+                public void onSuccess(Map<String, Object> stringObjectMap) {
+                    Toast.makeText(MainActivity.this, "New user with id: " + userNameTextField.getText().toString() + " successfully created",Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onError(FirebaseError firebaseError) {
+                    switch (firebaseError.getCode()) {
+                        case FirebaseError.EMAIL_TAKEN:
+                            Toast.makeText(MainActivity.this, "Email Already in System", Toast.LENGTH_SHORT).show();
+                            break;
+                        case FirebaseError.INVALID_EMAIL:
+                            Toast.makeText(MainActivity.this, "Email Email or Password", Toast.LENGTH_SHORT).show();
+                            break;
+                        case FirebaseError.INVALID_PASSWORD:
+                            Toast.makeText(MainActivity.this, "Invalid Email or Password", Toast.LENGTH_SHORT).show();
+                            break;
+                        case FirebaseError.AUTHENTICATION_PROVIDER_DISABLED:
+                            Toast.makeText(MainActivity.this, "Authentication Provider Disabled", Toast.LENGTH_SHORT).show();
+                            break;
+                        case FirebaseError.INVALID_AUTH_ARGUMENTS:
+                            Toast.makeText(MainActivity.this, "Invalid Authentication Arguments", Toast.LENGTH_SHORT).show();
+                            break;
+                        case FirebaseError.NETWORK_ERROR:
+                            Toast.makeText(MainActivity.this, "Network Error", Toast.LENGTH_SHORT).show();
+                            break;
+                        default:
+                            Toast.makeText(MainActivity.this, "Error 1", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                }
+            });
             }
         });
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginUserOnFirebase(userNameTextField.getText().toString(), passwordTextField.getText().toString(), myFirebase);
-                startActivity(new Intent(getApplicationContext(), StartPageActivity.class));
+    //                loginUserOnFirebase(userNameTextField.getText().toString(), passwordTextField.getText().toString(), myFirebase);
+            myFirebase.authWithPassword(userNameTextField.getText().toString(), passwordTextField.getText().toString(), new Firebase.AuthResultHandler() {
+                @Override
+                public void onAuthenticated(AuthData authData) {
+                    Toast.makeText(MainActivity.this, "New user with id: " + userNameTextField.getText().toString() + " successfully logged in",Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(getApplicationContext(), StartPageActivity.class);
+                    i.putExtra("USER_NAME", userNameTextField.getText().toString());
+                    startActivity(i);
+                }
+
+                @Override
+                public void onAuthenticationError(FirebaseError firebaseError) {
+                    switch (firebaseError.getCode()) {
+                        case FirebaseError.INVALID_EMAIL:
+                            Toast.makeText(MainActivity.this, "Email Email or Password", Toast.LENGTH_SHORT).show();
+                            break;
+                        case FirebaseError.USER_DOES_NOT_EXIST:
+                            Toast.makeText(MainActivity.this, "User not in System", Toast.LENGTH_SHORT).show();
+                            break;
+                        case FirebaseError.INVALID_PASSWORD:
+                            Toast.makeText(MainActivity.this, "Invalid Email or Password", Toast.LENGTH_SHORT).show();
+                            break;
+                        case FirebaseError.AUTHENTICATION_PROVIDER_DISABLED:
+                            Toast.makeText(MainActivity.this, "Authentication Provider Disabled", Toast.LENGTH_SHORT).show();
+                            break;
+                        case FirebaseError.INVALID_AUTH_ARGUMENTS:
+                            Toast.makeText(MainActivity.this, "Invalid Authentication Arguments", Toast.LENGTH_SHORT).show();
+                            break;
+                        case FirebaseError.NETWORK_ERROR:
+                            Toast.makeText(MainActivity.this, "Network Error", Toast.LENGTH_SHORT).show();
+                            break;
+                        default:
+                            Toast.makeText(MainActivity.this, "Error 2", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                }
+            });
             }
         });
     }
@@ -70,51 +138,54 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void createUserOnFirebase(final String username, String password, Firebase myFirebase) {
-        myFirebase.createUser(username, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
-            @Override
-            public void onSuccess(Map<String, Object> stringObjectMap) {
-                Toast.makeText(MainActivity.this, "New user with id: " + username + " successfully created",Toast.LENGTH_SHORT).show();
-            }
+//    public void createUserOnFirebase(final String username, String password, Firebase myFirebase) {
+//        myFirebase.createUser(username, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
+//            @Override
+//            public void onSuccess(Map<String, Object> stringObjectMap) {
+//                Toast.makeText(MainActivity.this, "New user with id: " + username + " successfully created",Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onError(FirebaseError firebaseError) {
+//                switch (firebaseError.getCode()) {
+//                    case FirebaseError.EMAIL_TAKEN:
+//                        Toast.makeText(MainActivity.this, "Email Already in System", Toast.LENGTH_SHORT).show();
+//                        break;
+//                    default:
+//                        Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
+//                        break;
+//                }
+//        }
+//        });
+//    }
 
-            @Override
-            public void onError(FirebaseError firebaseError) {
-                switch (firebaseError.getCode()) {
-                    case FirebaseError.EMAIL_TAKEN:
-                        Toast.makeText(MainActivity.this, "Email Already in System", Toast.LENGTH_SHORT).show();
-                        break;
-                    default:
-                        Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-        }
-        });
-    }
-
-    public void loginUserOnFirebase(String username, String password, Firebase myFirebase) {
-        myFirebase.authWithPassword(username, password, new Firebase.AuthResultHandler() {
-            @Override
-            public void onAuthenticated(AuthData authData) {
-                Toast.makeText(MainActivity.this, "New user with id: " + username + " successfully logged in",Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAuthenticationError(FirebaseError firebaseError) {
-                switch (firebaseError.getCode()) {
-                    case FirebaseError.INVALID_EMAIL:
-                        Toast.makeText(MainActivity.this, "Email Email or Password", Toast.LENGTH_SHORT).show();
-                        break;
-                    case FirebaseError.USER_DOES_NOT_EXIST:
-                        Toast.makeText(MainActivity.this, "User not in System", Toast.LENGTH_SHORT).show();
-                        break;
-                    case FirebaseError.INVALID_PASSWORD:
-                        Toast.makeText(MainActivity.this, "Invalid Email or Password", Toast.LENGTH_SHORT).show();
-                        break;
-                    default:
-                        Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-            }
-        });
-    }
+//    public void loginUserOnFirebase(final String username, String password, Firebase myFirebase) {
+//        myFirebase.authWithPassword(username, password, new Firebase.AuthResultHandler() {
+//            @Override
+//            public void onAuthenticated(AuthData authData) {
+//                Toast.makeText(MainActivity.this, "New user with id: " + username + " successfully logged in",Toast.LENGTH_SHORT).show();
+//                Intent i = new Intent(getApplicationContext(), StartPageActivity.class);
+//                i.putExtra("USER_NAME", username);
+//                startActivity(i);
+//            }
+//
+//            @Override
+//            public void onAuthenticationError(FirebaseError firebaseError) {
+//                switch (firebaseError.getCode()) {
+//                    case FirebaseError.INVALID_EMAIL:
+//                        Toast.makeText(MainActivity.this, "Email Email or Password", Toast.LENGTH_SHORT).show();
+//                        break;
+//                    case FirebaseError.USER_DOES_NOT_EXIST:
+//                        Toast.makeText(MainActivity.this, "User not in System", Toast.LENGTH_SHORT).show();
+//                        break;
+//                    case FirebaseError.INVALID_PASSWORD:
+//                        Toast.makeText(MainActivity.this, "Invalid Email or Password", Toast.LENGTH_SHORT).show();
+//                        break;
+//                    default:
+//                        Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
+//                        break;
+//                }
+//            }
+//        });
+//    }
 }
