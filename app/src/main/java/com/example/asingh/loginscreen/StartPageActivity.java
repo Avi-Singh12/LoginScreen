@@ -14,7 +14,7 @@ public class StartPageActivity extends Activity{
         setContentView(R.layout.main_screen);
 
         Bundle extras = getIntent().getExtras();
-        String username = extras.getString("USERNAME");
+        String username = extras.getString("USER_NAME");
 
         TextView usernameTextView = (TextView) findViewById(R.id.textViewUserName);
         usernameTextView.setText("Logged in as: " + username);

@@ -6,6 +6,8 @@
     <color name="red">#ff1900</color>
     <color name="yellow">#fdff00</color>
     <color name="pink">#ff00fa</color>
-    <color name="babyblue">#b3f0ff</color>
+    <color name="babyblue">#b0daff</color>
     <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="gray">#ebebeb</color>
 </resources>

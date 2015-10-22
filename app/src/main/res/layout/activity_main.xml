@@ -26,26 +26,65 @@
         android:layout_alignParentEnd="true" />
 
     <EditText
+        android:id="@+id/passwordTextView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:background="@color/gray"
+        android:textSize="18dp"
         android:inputType="textPassword"
         android:text="Password"
         android:ems="10"
-        android:id="@+id/passwordTextView"
-        android:layout_above="@+id/createAccountButton"
-        android:layout_centerHorizontal="true"
         android:layout_marginBottom="50dp"
-        android:password="false" />
+        android:password="false"
+        android:padding="7dp"
+        android:layout_above="@+id/createAccountButton"
+        android:layout_alignStart="@+id/userNameTextView"
+        android:layout_alignEnd="@+id/userNameTextView" />
 
     <EditText
+        android:id="@+id/userNameTextView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:textSize="18dp"
+        android:background="@color/gray"
         android:inputType="textPersonName"
         android:text="redsoxnpats@gmail.com"
         android:ems="10"
-        android:id="@+id/userNameTextView"
+        android:padding="7dp"
         android:layout_above="@+id/passwordTextView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp" />
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:id="@+id/usernameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Username"
+        android:textSize="18dp"
+        android:textAlignment="center"
+        android:background="@color/white"
+        android:layout_above="@+id/passwordTextView"
+        android:layout_alignTop="@+id/userNameTextView"
+        android:layout_alignParentBottom="false"
+        android:layout_alignWithParentIfMissing="false"
+        android:editable="false"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/passwordTextView" />
+
+    <TextView
+        android:id="@+id/passwordLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Password"
+        android:textSize="18dp"
+        android:textAlignment="center"
+        android:background="@color/white"
+        android:layout_alignWithParentIfMissing="false"
+        android:editable="false"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_below="@+id/userNameTextView"
+        android:layout_alignParentStart="true"
+        android:layout_alignBottom="@+id/passwordTextView"
+        android:layout_toStartOf="@+id/passwordTextView" />
 
 </RelativeLayout>
